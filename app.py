@@ -54,7 +54,9 @@ def extract_content_from_url(url):
             title = re.sub(r"[-|–|—].*$", "", title).strip()
             meta_desc = soup.find("meta", attrs={"name":"description"})
             description = meta_desc["content"] if meta_desc else ""
-            return f"{title}. {description}".strip()
+            # Keep only main keywords (optional)
+            content = f"{title}. {description}".strip()
+            return content
         else:
             return ""
     except Exception:
@@ -66,7 +68,7 @@ def extract_content_from_url(url):
 st.set_page_config(page_title="AI Title Ideas", layout="centered")
 st.title("AI Title Idea Generator")
 st.write(
-    "Enter a URL of a lab or webpage. The AI will generate **creative title ideas** based on the content, ignoring the site name and unrelated terms."
+    "Enter a URL of a lab or webpage. The AI will generate **creative title ideas** based strictly on the content, ignoring the site name and unrelated terms."
 )
 
 url = st.text_input("Enter the URL of your lab/webpage:")
@@ -83,15 +85,24 @@ if st.button("Generate Title Ideas"):
                 st.error("Could not fetch content from the URL!")
                 st.stop()
 
-            # Strict prompt: use only content keywords, no extra brands
+            # -----------------------------
+            # Strong prompt with few-shot examples
+            # -----------------------------
             prompt = f"""
 Generate 3-5 creative and catchy title ideas based ONLY on the following webpage content.
-Do NOT add any extra terms, brands, or providers not present in the content.
-Focus on keywords and context from the content only.
+Do NOT include any extra terms, brands, or cloud providers (e.g., AWS, Azure, GCP) unless they are present in the content.
+Focus strictly on the keywords and context from the content.
 Ignore website name or branding.
 
-Content:
-'{content}'
+Example:
+Content: "Build an AI image generator using Bedrock."
+Titles:
+- "Create Stunning AI Images with Bedrock"
+- "AI-Powered Image Generation Made Simple"
+- "Hands-On AI Image Lab Using Bedrock"
+
+Content: '{content}'
+Titles:
 """
 
             response = bedrock_client.invoke_model(

@@ -49,36 +49,46 @@ st.set_page_config(
 st.markdown(
     """
     <style>
+    /* Background gradient - subtle and vibrant */
     .stApp {
-        background: linear-gradient(135deg, #00c6ff 0%, #0072ff 50%, #ffb347 100%);
+        background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 50%, #ffc7e0 100%);
         font-family: 'Segoe UI', sans-serif;
-        color: #fff;
+        color: #111;
     }
+
+    /* Title */
     .title {
         font-size: 3rem;
         font-weight: bold;
         text-align: center;
         margin-bottom: 0.5rem;
-        text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        color: #222;
+        text-shadow: 1px 1px 3px rgba(255,255,255,0.5);
     }
+
+    /* Subtitle */
     .subtitle {
         font-size: 1.25rem;
         text-align: center;
         margin-bottom: 2rem;
-        color: #f0f0f0;
+        color: #333;
     }
+
+    /* Input box */
     div[data-baseweb="input"] > input {
         border-radius: 12px;
         padding: 12px;
         font-size: 1rem;
-        border: 2px solid #fff;
-        background: rgba(255,255,255,0.2);
-        color: #fff;
+        border: 2px solid #555;
+        background: rgba(255,255,255,0.8);
+        color: #111;
     }
+
+    /* Centered button */
     div.stButton > button {
         display: block;
         margin: 0 auto;
-        background: linear-gradient(90deg, #ff8c00 0%, #ff6600 100%);
+        background: linear-gradient(90deg, #ff9966 0%, #ff5e62 100%);
         color: #fff;
         font-size: 1.1rem;
         font-weight: bold;
@@ -87,13 +97,16 @@ st.markdown(
         border: none;
         transition: 0.3s;
     }
+
     div.stButton > button:hover {
-        background: linear-gradient(90deg, #ff6600 0%, #ff8c00 100%);
+        background: linear-gradient(90deg, #ff5e62 0%, #ff9966 100%);
         transform: scale(1.05);
     }
+
+    /* Result container */
     .result-box {
-        background: rgba(0,0,0,0.6);
-        border-left: 5px solid #00ff85;
+        background: rgba(50,50,50,0.7);
+        border-left: 5px solid #ffcc33;
         border-radius: 15px;
         padding: 20px;
         margin-top: 20px;
@@ -105,13 +118,16 @@ st.markdown(
         opacity: 0;
         animation: fadeIn 1s forwards;
     }
+
     @keyframes fadeIn { to { opacity: 1; } }
+
+    /* Error messages */
     .stError {
         background-color: rgba(255,0,0,0.2);
         border-left: 5px solid #ff0000;
         padding: 10px;
         border-radius: 8px;
-        color: #fff;
+        color: #111;
     }
     </style>
     """,
@@ -127,7 +143,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# New Inputs
+# Inputs
 product = st.text_input("Enter your product/idea:")
 theme = st.text_input("Optional: Enter the theme or style for the slogan:")
 
@@ -140,7 +156,7 @@ if st.button("Generate Slogan"):
         )
     else:
         try:
-            # Update prompt to include product and theme
+            # Combine product and theme in the prompt
             full_prompt = f"Generate a catchy slogan for the product/idea: '{product}'"
             if theme:
                 full_prompt += f" with the theme/style: '{theme}'"

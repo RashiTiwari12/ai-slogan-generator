@@ -49,9 +49,9 @@ def extract_content_from_url(url):
         r = requests.get(url, timeout=5)
         if r.status_code == 200:
             soup = BeautifulSoup(r.text, "html.parser")
-            # Remove site name/brand if present in title
+            # Remove site name/brand from title
             title = soup.title.string if soup.title else ""
-            title = re.sub(r"[-|–|—].*$", "", title).strip()  # remove dash and trailing site name
+            title = re.sub(r"[-|–|—].*$", "", title).strip()
             meta_desc = soup.find("meta", attrs={"name":"description"})
             description = meta_desc["content"] if meta_desc else ""
             return f"{title}. {description}".strip()
@@ -64,9 +64,10 @@ def extract_content_from_url(url):
 # Streamlit App
 # -----------------------------
 st.set_page_config(page_title="AI Title Ideas", layout="centered")
-
 st.title("AI Title Idea Generator")
-st.write("Enter a URL of a lab or webpage. The AI will generate **creative title ideas** based on the content, ignoring the site name.")
+st.write(
+    "Enter a URL of a lab or webpage. The AI will generate **creative title ideas** based on the content, ignoring the site name and unrelated terms."
+)
 
 url = st.text_input("Enter the URL of your lab/webpage:")
 
@@ -82,11 +83,16 @@ if st.button("Generate Title Ideas"):
                 st.error("Could not fetch content from the URL!")
                 st.stop()
 
-            # Prompt: generate multiple title ideas, ignore site name
-            prompt = (
-                f"Generate 3-5 creative and catchy **title ideas** based on the following content. "
-                f"Focus on keywords from the page and ignore the website name or branding:\n\n'{content}'"
-            )
+            # Strict prompt: use only content keywords, no extra brands
+            prompt = f"""
+Generate 3-5 creative and catchy title ideas based ONLY on the following webpage content.
+Do NOT add any extra terms, brands, or providers not present in the content.
+Focus on keywords and context from the content only.
+Ignore website name or branding.
+
+Content:
+'{content}'
+"""
 
             response = bedrock_client.invoke_model(
                 modelId="amazon.nova-lite-v1:0",
@@ -110,7 +116,11 @@ if st.button("Generate Title Ideas"):
             ).strip()
 
             st.subheader("Title Ideas:")
-            st.write(titles)
+            # Display as numbered list
+            for i, line in enumerate(titles.split("\n"), 1):
+                clean_line = line.strip('-•0123456789. ').strip()
+                if clean_line:
+                    st.write(f"{i}. {clean_line}")
 
         except Exception as e:
             st.error(f"Error generating title ideas: {e}")

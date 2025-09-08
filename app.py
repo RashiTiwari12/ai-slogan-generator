@@ -51,10 +51,10 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* Background gradient */
+    /* Background gradient - toned down for contrast */
     .stApp {
-        background: linear-gradient(135deg, #ff7eb3 0%, #ff758c 50%, #ffb347 100%);
-        color: #fff;
+        background: linear-gradient(135deg, #f5f5f5 0%, #dcdcdc 50%, #bfbfbf 100%);
+        color: #111; /* dark text for visibility */
         font-family: 'Segoe UI', sans-serif;
     }
 
@@ -64,7 +64,8 @@ st.markdown(
         font-weight: bold;
         text-align: center;
         margin-bottom: 0.5rem;
-        text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        color: #222;
+        text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
     }
 
     /* Subtitle / Markdown */
@@ -72,7 +73,7 @@ st.markdown(
         font-size: 1.25rem;
         text-align: center;
         margin-bottom: 2rem;
-        color: #f0f0f0;
+        color: #333;
     }
 
     /* Input box */
@@ -80,14 +81,14 @@ st.markdown(
         border-radius: 12px;
         padding: 12px;
         font-size: 1rem;
-        border: 2px solid #fff;
-        background: rgba(255,255,255,0.1);
-        color: #fff;
+        border: 2px solid #555;
+        background: rgba(255,255,255,0.9);
+        color: #111;
     }
 
     /* Button styling */
     div.stButton > button {
-        background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+        background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
         color: #fff;
         font-size: 1rem;
         font-weight: bold;
@@ -98,7 +99,7 @@ st.markdown(
     }
 
     div.stButton > button:hover {
-        background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+        background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
         transform: scale(1.05);
     }
 
@@ -108,6 +109,7 @@ st.markdown(
         border-left: 5px solid #00ff85;
         padding: 10px;
         border-radius: 8px;
+        color: #111;
     }
 
     /* Error message */
@@ -116,6 +118,7 @@ st.markdown(
         border-left: 5px solid #ff0040;
         padding: 10px;
         border-radius: 8px;
+        color: #111;
     }
     </style>
     """,

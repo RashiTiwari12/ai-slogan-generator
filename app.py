@@ -8,7 +8,7 @@ import json
 # Config from Secrets (with fallback)
 # -----------------------------
 RATE_LIMIT = st.secrets.get("rate_limit", {}).get("max_requests", 6)
-TIME_WINDOW = st.secrets.get("rate_limit", {}).get("time_window", 60)
+TIME_WINDOW = st.secrets.get("rate_limit", {}).get("time_window_seconds", 60)
 BEDROCK_REGION = st.secrets.get("aws", {}).get("region", "us-east-1")
 
 
